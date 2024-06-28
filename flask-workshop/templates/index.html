@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Cards</title>	
+
+    <link     href='http://fonts.googleapis.com/css?family=Sintony:400,700'     rel='stylesheet' type='text/css'>
+
+    <style type="text/css">   
+      div#loading {
+        top: 200px;
+        margin: auto;
+        position: absolute;
+        z-index: 1000;
+        width: 1024px;
+        height: 1024px;
+        display: none;
+        background: url(/static/giphy.webp) no-repeat;
+        cursor: wait;
+      } 
+      div#content {
+        display: block;
+      }
+      
+    </style>
+
+    <!-- <script type="text/javascript">
+      function loading(){
+          document.getElementById("loading").style.display = "none";
+          document.getElementById("content").style.display = "block";       
+      }
+    </script> -->
+    <script type="text/javascript">// <![CDATA[
+      function preloader(){
+          document.getElementById("loading").style.display = "block";
+          document.getElementById("content").style.display = "none";
+          console.log("got here")
+      }//preloader
+      // window.onload = preloader;
+// ]]></script>
+
+  </head>  
+
+  <body>
+    <div id="loading"></div>
+    <div id="content">
+      <div id="banner">
+        <h1>cats everywhere</h1>
+        <p class="lead">We're bringing cats to the internet. Free.     Cute. Awesome.</p>
+      </div>
+      <div>
+        <h2>Upload TCG Player Pull List File</h2>
+        <form action="/tcg-puller" method="post">
+          <input type="file" value="Choose TCG Direct File" name="file"></input>
+          <input type="submit" value="Get TCG Direct Pull List" onclick=preloader()></input>
+        </form>
+      </div>
+      <div>
+        <h2>Upload Scanned Cards File</h2>
+        <form action="/tcg-upload" method="post">
+          <input type="file" value="Scanned Card Flie" name="file"></input>
+          <input type="submit" value="Upload to Sheet" onclick=preloader()></input>
+        </form>
+      </div>
+      <div>
+        <h2>Get Pull List</h2>
+        <form action="/pull-list" method="get">
+          <input type="submit" value="Get Pull List" onclick=preloader()></input>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
