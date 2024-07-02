@@ -27,18 +27,37 @@ def write_to_file(upload_csv):
     numAr = csvFile.to_numpy()
     length =  wks1.get_col(1)
     index_of_last = get_index_of_last(length)
+    if index_of_last > 50:
+        last_fifty = wks1.get_values((index_of_last-50,1),(index_of_last,6),returnas='matrix',include_tailing_empty=False)
 
     all_lines = []
+    cards = 1
     if index_of_last == 0:
         lastSerialNumber = 10000
         batch = 1
     else:
         lastSerialNumber = int(wks1.get_value((index_of_last, 7)))
-        batch = int(wks1.get_value((index_of_last, 5))) + 1
+        index = 0
+        old_count = 1
+        for line in last_fifty:
+            if index != 0:
+                if batch_check == line[4]:
+                    old_count+=1
+                else:
+                    old_count = 1
+
+            batch_check = line[4]
+            index+=1
+        cards = old_count + 1
+        if  old_count == 50:
+            batch = int(wks1.get_value((index_of_last, 5))) + 1
+        else:
+            batch = int(wks1.get_value((index_of_last, 5)))
     for lines in numAr:
         lines = list(lines)
         lastSerialNumber+=1
         
+
         lines.append(batch)
         lines.append(date.strftime("%x"))
         lines.append(lastSerialNumber)
@@ -47,6 +66,10 @@ def write_to_file(upload_csv):
         if count > 1:
             while count > 1:
                 all_lines.append(lines[:])
+                if cards % 50 == 0:
+                    batch+=1
+                    lines[4] = batch
+                cards+=1
                 count-=1
                 lastSerialNumber+=1
                 lines[6]+=1
@@ -54,6 +77,9 @@ def write_to_file(upload_csv):
 
         all_lines.append(lines) 
         index_of_last+=1
+        if cards % 50 == 0:
+            batch+=1
+        cards+=1
 
     wks1.append_table(all_lines,dimension='ROWS',overwrite=False)
 

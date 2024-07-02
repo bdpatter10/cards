@@ -45,21 +45,20 @@
     <div id="loading"></div>
     <div id="content">
       <div id="banner">
-        <h1>cats everywhere</h1>
-        <p class="lead">We're bringing cats to the internet. Free.     Cute. Awesome.</p>
+        <h1>cards</h1>
       </div>
       <div>
+        <div>
+          <h2>Upload Scanned Cards File</h2>
+          <form action="/tcg-upload" method="post">
+            <input type="file" value="Scanned Card Flie" name="file"></input>
+            <input type="submit" value="Upload to Sheet" onclick=preloader()></input>
+          </form>
+        </div>
         <h2>Upload TCG Player Pull List File</h2>
         <form action="/tcg-puller" method="post">
           <input type="file" value="Choose TCG Direct File" name="file"></input>
           <input type="submit" value="Get TCG Direct Pull List" onclick=preloader()></input>
-        </form>
-      </div>
-      <div>
-        <h2>Upload Scanned Cards File</h2>
-        <form action="/tcg-upload" method="post">
-          <input type="file" value="Scanned Card Flie" name="file"></input>
-          <input type="submit" value="Upload to Sheet" onclick=preloader()></input>
         </form>
       </div>
       <div>
