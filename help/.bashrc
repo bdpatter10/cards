@@ -1,0 +1,1 @@
+alias a='cd ~/OneDrive/Desktop/cards/flask-workshop'
