@@ -7,12 +7,16 @@ def get_index_of_last(list):
     list.reverse()
     for item in range(len(list)):
         if list[item] != '':
+            if list[item].isspace():
+                continue
             index_of_last = len(list) - item
             break
         else:
             index_of_last = 0
         
     # print(index_of_last)
+    if index_of_last>0:
+        return index_of_last-1
     return index_of_last
 
 def write_to_file(upload_csv):
@@ -28,10 +32,12 @@ def write_to_file(upload_csv):
     length =  wks1.get_col(1)
     index_of_last = get_index_of_last(length)
     if index_of_last > 50:
-        last_fifty = wks1.get_values((index_of_last-50,1),(index_of_last,6),returnas='matrix',include_tailing_empty=False)
+        last_fifty = wks1.get_values((index_of_last-0,1),(index_of_last,6),returnas='matrix',include_tailing_empty=False)
 
     all_lines = []
     cards = 1
+    print("index of Last: ")
+    print(index_of_last)
     if index_of_last == 0:
         lastSerialNumber = 10000
         batch = 1
@@ -41,6 +47,7 @@ def write_to_file(upload_csv):
         old_count = 1
         for line in last_fifty:
             if index != 0:
+                print(line)
                 if batch_check == line[4]:
                     old_count+=1
                 else:
@@ -80,9 +87,10 @@ def write_to_file(upload_csv):
         if cards % 50 == 0:
             batch+=1
         cards+=1
-
-    wks1.append_table(all_lines,dimension='ROWS',overwrite=False)
-
+    try:
+        wks1.append_table(all_lines,dimension='ROWS',overwrite=True)
+    except:
+        print("does it still append?")
 
 def read_and_pull():
     gc = pygsheets.authorize(service_file='./utils/drivedecoder-6d045ce8f885.json')
