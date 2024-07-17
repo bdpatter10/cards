@@ -98,9 +98,9 @@ def read_and_pull():
     wksPull = sh[3]
     wks = sh[0]
     length = wksZap.get_col(1)
-    print(length)
+    # print(length)
     last = get_index_of_last(length)
-    print(last)
+    # print(last)
     order_list = wksZap.get_values((2,1),(last + 1,6),returnas='matrix',include_tailing_empty=False)
     pull_list = []
     name_set = ''
@@ -178,7 +178,7 @@ def read_and_pull():
     # print(to_remove)
     # remove from master list
     for line in to_remove:
-        wks.delete_rows(line+1,number=1)
+        wks.delete_rows(line+2,number=1)
     # put on a new sheet
     length1 =  wksPull.get_col(1)
     last1 = get_index_of_last(length1)
