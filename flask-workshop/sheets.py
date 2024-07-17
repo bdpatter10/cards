@@ -2,6 +2,8 @@ import pygsheets
 import pandas as pd
 import datetime
 from numpy import genfromtxt
+import pygsheets.cell
+import pygsheets.datarange
 
 def get_index_of_last(list):
     list.reverse()
@@ -93,12 +95,15 @@ def read_and_pull():
     gc = pygsheets.authorize(service_file='./utils/drivedecoder-6d045ce8f885.json')
     sh = gc.open('decoder')
     wksZap = sh[2]
-    wksPull = sh[1]
+    wksPull = sh[3]
     wks = sh[0]
     length = wksZap.get_col(1)
+    print(length)
     last = get_index_of_last(length)
-    order_list = wksZap.get_values((2,1),(last,6),returnas='matrix',include_tailing_empty=False)
+    print(last)
+    order_list = wksZap.get_values((2,1),(last + 1,6),returnas='matrix',include_tailing_empty=False)
     pull_list = []
+    name_set = ''
     for order in order_list:
         # print(order)
         # print(len(order))
@@ -114,16 +119,26 @@ def read_and_pull():
         if order[2] == '' or order[2] == 'New':
             # print('not right')
             continue
+        # print(name_set)
+        # print(order_list.index(order))
         name_set = order[0].split('[')
+        # print(name_set)
         name = name_set[0].strip()
-        sett = name_set[1].replace(']', '')
+        # print(name_set)
+        if len(name_set) > 1:
+            sett = name_set[1].replace(']', '')
+        else:
+            continue
         orderstr = order.pop(0)
         orderstr = order.pop(0)
+        # print(sett)
+        # print(name)
         order.insert(0, sett)
         order.insert(0, name)
         pull_list.append(order)
+        # print("order")
         # print(order)
-
+    #Ankle Biter [Outlaws of Thunder Junction]		Near Mint Foil	1	#2102	Test tester
     # get the cards from the master list
 
     length = wks.get_col(1)
@@ -160,14 +175,14 @@ def read_and_pull():
     # print("not pull:")
     # print(not_pull)
     to_remove.sort(reverse=True)
-    print(to_remove)
+    # print(to_remove)
     # remove from master list
     for line in to_remove:
         wks.delete_rows(line+1,number=1)
     # put on a new sheet
-    # length1 =  wksPull.get_col(1)
-    # last1 = get_index_of_last(length1)
-    # wksPull.update_values(crange=(last1+2,1),values=master_pull,majordim='ROWS')
+    length1 =  wksPull.get_col(1)
+    last1 = get_index_of_last(length1)
+    wksPull.update_values(crange=(last1+2,1),values=master_pull,majordim='ROWS')
     wksZap.clear(start='A2')
     
     return master_pull
@@ -214,12 +229,17 @@ def  tcg_order_puller(csv):
 
     to_remove.sort(reverse=True)
     for line in to_remove:
-        wks.delete_rows(line+1,number=1)
+        wks.delete_rows(line+2,number=1)
 
     wksPull = sh[1]
     length1 =  wksPull.get_col(1)
     last1 = get_index_of_last(length1)
+    master_pull.sort(key=lambda x: x[4])
     wksPull.update_values(crange=(last1+2,1),values=master_pull,majordim='ROWS')
+    # data_range = pygsheets.datarange.DataRange(start=(last1+2+len(master_pull),1),end=(last1+2+len(master_pull),7),worksheet=wksPull)
+    # data_range.apply_format(fields="")
+    # pygsheets.Cell
+
     
 
 def separate_by_order(pull_list):
