@@ -50,12 +50,16 @@
       <div>
         <div>
           <h2>Upload Scanned Cards File</h2>
+          <p>Use the below upload and submit buttons to:</p>
+          <p>Upload the CSV file that contains the cards scanned into TCG player</p>
           <form action="/tcg-upload" method="post">
             <input type="file" value="Scanned Card Flie" name="file"></input>
             <input type="submit" value="Upload to Sheet" onclick=preloader()></input>
           </form>
         </div>
         <h2>Upload TCG Player Pull List File</h2>
+        <p>Use the below upload and submit buttons for:</p>
+        <p>Uploading the CSV file for a tcg player pull list</p>
         <form action="/tcg-puller" method="post">
           <input type="file" value="Choose TCG Direct File" name="file"></input>
           <input type="submit" value="Get TCG Direct Pull List" onclick=preloader()></input>
@@ -63,6 +67,8 @@
       </div>
       <div>
         <h2>Get Pull List</h2>
+        <p>Use the Below button when you are ready to pull orders made through Shopify:</p>
+        <p>ie. Through North Valley Games website.</p>
         <form action="/pull-list" method="get">
           <input type="submit" value="Get Pull List" onclick=preloader()></input>
         </form>
